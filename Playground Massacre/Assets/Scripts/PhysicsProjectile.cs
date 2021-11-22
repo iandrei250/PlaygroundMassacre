@@ -20,4 +20,14 @@ public class PhysicsProjectile : Projectile
       base.Launch();
       rigidBody.AddRelativeForce(Vector3.forward * weapon.GetShootingForce(), ForceMode.Impulse);
   }
+
+    private void OnTriggerEnter(Collider other) {
+       Destroy(gameObject);
+       IDamage[] damageTakers = other.GetComponentsInParent<IDamage>();
+
+       foreach (var taker in damageTakers)
+       {
+           taker.TakeDamage(weapon, this, transform.position);
+       }
+   }
 }
